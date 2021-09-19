@@ -1,4 +1,4 @@
-package com.amirfounder.amirappareldemoapispringboot.domains;
+package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
