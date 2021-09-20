@@ -4,6 +4,7 @@ import com.amirfounder.amirappareldemoapispringboot.domains.product.Product;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -25,7 +26,7 @@ public class ProductFactory {
         String type = generateType();
         String name = generateName(material, type);
 
-        product.setId((long) id);
+        product.setId((long) id + 1);
         product.setName(name);
         product.setType(type);
         product.setMaterial(material);
@@ -33,6 +34,10 @@ public class ProductFactory {
         product.setPrice(generatePrice());
         product.setAvailableQuantity(generateAvailableQuantity());
         product.setActiveStatus(generateActiveStatus());
+        product.setDemographic(generateDemographic());
+        product.setLaunchDate(generateLaunchDate());
+        product.setColor(generateColor());
+
         return product;
     }
 
@@ -71,6 +76,25 @@ public class ProductFactory {
 
     private Boolean generateActiveStatus() {
         return generateRandomBoolean();
+    }
+
+    private String generateDemographic() {
+        String[] demographics = {"Kids", "Women", "Men"};
+        int randomIndex = generateRandomInt(demographics.length);
+        return demographics[randomIndex];
+    }
+
+    private LocalDate generateLaunchDate() {
+        int minDay = (int) LocalDate.of(1990, 1, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2010, 1, 1).toEpochDay();
+        int randomDay = minDay + generateRandomInt(maxDay - minDay);
+        return LocalDate.ofEpochDay(randomDay);
+    }
+
+    private String generateColor() {
+        String[] colors = {"#b0160b", "#b0160b", "#870bb0", "#0b81b0"};
+        int randomIndex = generateRandomInt(colors.length);
+        return colors[randomIndex];
     }
 
     private int generateRandomInt(int maxBound) {

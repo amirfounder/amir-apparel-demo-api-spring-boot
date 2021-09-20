@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 public class Product {
@@ -19,29 +20,11 @@ public class Product {
     private BigDecimal price;
     private Integer availableQuantity;
     private Boolean activeStatus;
+    private LocalDate launchDate;
+    private String demographic;
+    private String color;
 
     public Product() {}
-
-    public Product(Long id, String name, String type, String description, String material, BigDecimal price, Integer availableQuantity, Boolean activeStatus) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.material = material;
-        this.price = price;
-        this.availableQuantity = availableQuantity;
-        this.activeStatus = activeStatus;
-    }
-
-    public Product(String name, String type, String description, String material, BigDecimal price, Integer availableQuantity, Boolean activeStatus) {
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.material = material;
-        this.price = price;
-        this.availableQuantity = availableQuantity;
-        this.activeStatus = activeStatus;
-    }
 
     public Long getId() {
         return id;
@@ -105,5 +88,29 @@ public class Product {
 
     public void setActiveStatus(Boolean activeStatus) {
         this.activeStatus = activeStatus;
+    }
+
+    public LocalDate getLaunchDate() {
+        return launchDate;
+    }
+
+    public void setLaunchDate(LocalDate launchDate) {
+        this.launchDate = launchDate;
+    }
+
+    public String getDemographic() {
+        return demographic;
+    }
+
+    public void setDemographic(String demographic) {
+        this.demographic = demographic;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
