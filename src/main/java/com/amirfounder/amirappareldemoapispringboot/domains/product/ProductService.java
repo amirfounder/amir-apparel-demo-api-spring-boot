@@ -6,4 +6,5 @@ public interface ProductService {
 
     public List<Product> getProducts(Product product);
 
+    public Product getProductById(Long id);
 }

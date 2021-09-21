@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.amirfounder.amirappareldemoapispringboot.utils.Paths.PRODUCTS_PATH;
@@ -27,6 +27,14 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(Product product) {
         logger.info("Request received for getProducts");
         return new ResponseEntity<>(productService.getProducts(product), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<Product> getProductById(
+            @PathVariable Long id
+    ) {
+        logger.info("Request received for getProductById with Id: " + id);
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
 }
