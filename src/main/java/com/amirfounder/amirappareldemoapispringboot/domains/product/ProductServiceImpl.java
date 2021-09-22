@@ -30,4 +30,22 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public Product getProductById(Long id) {
+        Product product;
+
+        try {
+            product = productRepository.findById(id).orElse(null);
+        } catch (DataAccessException dae) {
+            logger.error(dae.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
+        }
+
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find product with id: " + id);
+        }
+
+        return product;
+    }
+
 }
