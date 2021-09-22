@@ -1,5 +1,6 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
+import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find product with id: " + id);
+            throw new ResourceNotFound("Could not find product with id: " + id);
         }
 
         return product;
