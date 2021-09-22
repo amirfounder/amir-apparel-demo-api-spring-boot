@@ -12,6 +12,7 @@ public class ExceptionController {
 
     private static final String NOT_FOUND = "404 Resource Not Found";
     private static final String SERVER_ERROR = "500 Server Error";
+    private static final String SERVICE_UNAVAILABLE = "503 Service Unavailable";
 
     @ExceptionHandler(ResourceNotFound.class)
     protected ResponseEntity<ExceptionResponse> resourceNotFound(ResourceNotFound exception) {
@@ -31,5 +32,15 @@ public class ExceptionController {
                 exception.getMessage()
         );
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ServiceUnavailable.class)
+    protected ResponseEntity<ExceptionResponse> serviceUnavailable(ServiceUnavailable exception) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                SERVICE_UNAVAILABLE,
+                exception.getMessage()
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

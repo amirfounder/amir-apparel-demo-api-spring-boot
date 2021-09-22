@@ -1,15 +1,14 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
+import com.amirfounder.amirappareldemoapispringboot.exceptions.ServiceUnavailable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,10 +23,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProducts(Product product) {
         try {
-            return productRepository.findAll(Example.of(product, ExampleMatcher.matching().withIgnoreCase()));
+            return productRepository.findAll(
+                Example.of(product, ExampleMatcher
+                    .matching()
+                    .withIgnoreCase()
+            ));
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
         }
     }
 
@@ -39,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
             product = productRepository.findById(id).orElse(null);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
         }
 
         if (product == null) {
