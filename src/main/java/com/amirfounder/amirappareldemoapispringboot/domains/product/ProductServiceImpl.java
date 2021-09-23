@@ -21,14 +21,7 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public Page<Product> getProducts(Product product, Integer pageCount, Integer pageSize) {
-
-        if (pageCount == null || pageSize == null) {
-            logger.error("Could not process page size or count");
-            throw new BadRequest("Could not process page size or count");
-        }
-
-        Pageable page = PageRequest.of(pageCount, pageSize);
+    public Page<Product> getProducts(Product product, Pageable page) {
         Example<Product> example = Example.of(product, ExampleMatcher.matchingAll().withIgnoreCase());
 
         try {
