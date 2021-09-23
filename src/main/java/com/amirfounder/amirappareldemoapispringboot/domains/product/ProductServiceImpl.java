@@ -1,5 +1,6 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
+import com.amirfounder.amirappareldemoapispringboot.exceptions.BadRequest;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ServiceUnavailable;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getProducts(Product product, Integer pageCount, Integer pageSize) {
+
+        if (pageCount == null || pageSize == null) {
+            logger.error("Could not process page size or count");
+            throw new BadRequest("Could not process page size or count");
+        }
 
         Pageable page = PageRequest.of(pageCount, pageSize);
         Example<Product> example = Example.of(product, ExampleMatcher.matchingAll().withIgnoreCase());
