@@ -1,13 +1,15 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
+import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
+import com.amirfounder.amirappareldemoapispringboot.exceptions.ServiceUnavailable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -27,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.findAll(example, page);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
         }
     }
 
@@ -39,11 +41,11 @@ public class ProductServiceImpl implements ProductService {
             product = productRepository.findById(id).orElse(null);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
         }
 
         if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find product with id: " + id);
+            throw new ResourceNotFound("Could not find product with id: " + id);
         }
 
         return product;
