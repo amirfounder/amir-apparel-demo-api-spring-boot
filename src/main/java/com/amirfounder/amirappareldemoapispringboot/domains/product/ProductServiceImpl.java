@@ -4,13 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -21,9 +18,13 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public List<Product> getProducts(Product product) {
+    public Page<Product> getProducts(Product product, Integer pageCount, Integer pageSize) {
+
+        Pageable page = PageRequest.of(pageCount, pageSize);
+        Example<Product> example = Example.of(product, ExampleMatcher.matchingAll().withIgnoreCase());
+
         try {
-            return productRepository.findAll(Example.of(product, ExampleMatcher.matching().withIgnoreCase()));
+            return productRepository.findAll(example, page);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, dae.getMessage());
@@ -47,5 +48,4 @@ public class ProductServiceImpl implements ProductService {
 
         return product;
     }
-
 }
