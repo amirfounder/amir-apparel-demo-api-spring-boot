@@ -1,10 +1,10 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductService {
 
-    public List<Product> getProducts(Product product);
+    public Page<Product> getProducts(Product product, Integer pageCount, Integer pageSize);
 
     public Product getProductById(Long id);
 }
