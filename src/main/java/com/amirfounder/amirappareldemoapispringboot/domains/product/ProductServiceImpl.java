@@ -11,13 +11,19 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    ProductRepository productRepository;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Page<Product> getProducts(Product product, Pageable page) {
@@ -30,6 +36,17 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceUnavailable(dae.getMessage());
         }
     }
+
+    @Override
+    public List<Product> getProductsWithFilter(Product product, Pageable pageable) {
+        try {
+            return productRepository.findAllWithFilter(product);
+        } catch (DataAccessException dae) {
+            logger.error(dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
+        }
+    }
+
 
     @Override
     public Product getProductById(Long id) {

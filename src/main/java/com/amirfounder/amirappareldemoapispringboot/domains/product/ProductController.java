@@ -19,8 +19,12 @@ public class ProductController {
 
     Logger logger = LogManager.getLogger(ProductController.class);
 
+    private final ProductServiceImpl productService;
+
     @Autowired
-    ProductServiceImpl productService;
+    public ProductController(ProductServiceImpl productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(
@@ -29,6 +33,15 @@ public class ProductController {
     ) {
         logger.info("Request received for getProducts");
         return new ResponseEntity<>(productService.getProducts(product, page), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<Product>> getProductsWithFilter(
+            Product product,
+            Pageable page
+    ) {
+        logger.info("Request received for getProductsWithFilter");
+        return new ResponseEntity<>(productService.getProductsWithFilter(product, page), HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")
