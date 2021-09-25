@@ -1,6 +1,5 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
-import com.amirfounder.amirappareldemoapispringboot.exceptions.BadRequest;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ServiceUnavailable;
 import org.apache.logging.log4j.LogManager;
