@@ -29,19 +29,19 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(
             Product product,
-            Pageable page
+            Pageable pageable
     ) {
         logger.info("Request received for getProducts");
-        return new ResponseEntity<>(productService.getProducts(product, page), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProducts(product, pageable), HttpStatus.OK);
     }
 
     @GetMapping(value = "/filter")
-    public ResponseEntity<List<Product>> getProductsWithFilter(
+    public ResponseEntity<Page<Product>> getProductsWithFilter(
             Product product,
-            Pageable page
+            Pageable pageable
     ) {
         logger.info("Request received for getProductsWithFilter");
-        return new ResponseEntity<>(productService.getProductsWithFilter(product, page), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProductsWithFilter(product, pageable), HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")

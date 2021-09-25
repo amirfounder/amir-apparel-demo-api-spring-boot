@@ -9,7 +9,7 @@ public interface ProductService {
 
     public Page<Product> getProducts(Product product, Pageable pageable);
 
-    public List<Product> getProductsWithFilter(Product product, Pageable pageable);
+    public Page<Product> getProductsWithFilter(Product product, Pageable pageable);
 
     public Product getProductById(Long id);
 }

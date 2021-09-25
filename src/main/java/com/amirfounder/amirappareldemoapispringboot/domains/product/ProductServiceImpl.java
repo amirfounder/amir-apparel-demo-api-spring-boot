@@ -38,9 +38,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductsWithFilter(Product product, Pageable pageable) {
+    public Page<Product> getProductsWithFilter(Product product, Pageable pageable) {
         try {
-            return productRepository.findAllWithFilter(product);
+            return productRepository.findAllWithFilter(product, pageable);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
             throw new ServiceUnavailable(dae.getMessage());
