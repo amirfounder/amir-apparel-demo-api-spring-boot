@@ -19,25 +19,42 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
     private final ProductUtils productUtils;
 
     @Autowired
-    public ProductCriteriaRepositoryImpl(EntityManager entityManager, ProductUtils productUtils) {
+    public ProductCriteriaRepositoryImpl(
+            EntityManager entityManager,
+            ProductUtils productUtils
+    ) {
         this.entityManager = entityManager;
         this.productUtils = productUtils;
     }
 
     @Override
-    public Page<Product> findAllWithFilter(Product product, Pageable pageable) {
+    public Page<Product> findAllWithFilter(
+            Product product,
+            Pageable pageable
+    ) {
+        TypedQuery<Product> productTypedQuery = buildProductsQuery(product, pageable);
+        TypedQuery<Long> countTypedQuery = buildCountQuery(product);
 
-        TypedQuery<Product> resultsQuery = buildProductQuery(product, pageable);
-        TypedQuery<Long> countQuery = buildProductCountQuery();
+        List<Product> products = productTypedQuery.getResultList();
+        Long count = countTypedQuery.getSingleResult();
 
-        List<Product> products = resultsQuery.getResultList();
-        Long count = countQuery.getSingleResult();
-
-        return new PageImpl<Product>(products, pageable, count);
+        return new PageImpl<>(products, pageable, count);
     }
 
-    private TypedQuery<Product> buildProductQuery(Product product, Pageable pageable) {
-        CriteriaQuery<Product> criteriaQuery = buildProductCriteriaQuery(product, pageable);
+    private TypedQuery<Product> buildProductsQuery(
+            Product product,
+            Pageable pageable
+    ) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        ArrayList<Predicate> filterCriteria = buildFilterCriteria(product, root);
+        ArrayList<Order> orderCriteria = buildOrderCriteria(pageable, root);
+
+        modifyProductCriteriaQuery(criteriaQuery, filterCriteria, orderCriteria, root);
+
         TypedQuery<Product> query = entityManager.createQuery(criteriaQuery);
 
         int pageNumber = pageable.getPageNumber();
@@ -49,45 +66,75 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
         return query;
     }
 
-    private CriteriaQuery<Product> buildProductCriteriaQuery(Product product, Pageable pageable) {
+    private TypedQuery<Long> buildCountQuery(
+            Product product
+    ) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
         Root<Product> root = criteriaQuery.from(Product.class);
 
-        ArrayList<Predicate> predicates = buildWhereClausePredicates(product, root);
-        ArrayList<Order> orders = buildOrderCriteria(pageable, root, criteriaQuery);
+        ArrayList<Predicate> filterCriteria = buildFilterCriteria(product, root);
 
-        criteriaQuery.select(root);
-        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
-        criteriaQuery.orderBy(orders.toArray(new Order[]{}));
+        modifyCountCriteriaQuery(criteriaQuery, filterCriteria, root);
 
-        return criteriaQuery;
+        return entityManager.createQuery(criteriaQuery);
     }
 
-    private ArrayList<Predicate> buildWhereClausePredicates(Product product, Root<Product> root) {
+    private void modifyProductCriteriaQuery(
+            CriteriaQuery<Product> criteriaQuery,
+            ArrayList<Predicate> filterCriteria,
+            ArrayList<Order> orders,
+            Root<Product> root
+    ) {
+        criteriaQuery.select(root);
+        criteriaQuery.where(filterCriteria.toArray(new Predicate[]{}));
+        criteriaQuery.orderBy(orders.toArray(new Order[]{}));
+    }
+
+    private void modifyCountCriteriaQuery(
+            CriteriaQuery<Long> criteriaQuery,
+            ArrayList<Predicate> predicates,
+            Root<Product> root
+    ) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
+    }
+
+    private ArrayList<Predicate> buildFilterCriteria(
+            Product product,
+            Root<Product> root
+    ) {
         ArrayList<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(buildWhereClausePredicate(root, "material", product, Product::getMaterial));
-        predicates.add(buildWhereClausePredicate(root, "type", product, Product::getType));
-        predicates.add(buildWhereClausePredicate(root, "demographic", product, Product::getDemographic));
-        predicates.add(buildWhereClausePredicate(root, "color", product, Product::getColor));
+        predicates.add(buildSingleFilterCriteria(root, "material", product, Product::getMaterial));
+        predicates.add(buildSingleFilterCriteria(root, "type", product, Product::getType));
+        predicates.add(buildSingleFilterCriteria(root, "demographic", product, Product::getDemographic));
+        predicates.add(buildSingleFilterCriteria(root, "color", product, Product::getColor));
 
-        return (ArrayList<Predicate>) predicates.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return (ArrayList<Predicate>) predicates
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
-    private Predicate buildWhereClausePredicate(
-            Root<Product> root, String entityColumn, Product product, Function<Product, String> resolver
+    private Predicate buildSingleFilterCriteria(
+            Root<Product> root,
+            String property,
+            Product product,
+            Function<Product, String> resolver
     ) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         String value = resolver.apply(product);
         return value == null ? null : criteriaBuilder
-                .upper(root.get(entityColumn))
+                .upper(root.get(property))
                 .in(Arrays.asList(value.toUpperCase().split(",")));
     }
 
     private ArrayList<Order> buildOrderCriteria(
-            Pageable pageable, Root<Product> root, CriteriaQuery<Product> criteriaQuery
+            Pageable pageable,
+            Root<Product> root
     ) {
         ArrayList<Order> orders = new ArrayList<>();
 
@@ -101,7 +148,11 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
         return orders;
     }
 
-    private Order buildSingleOrderCriteria(Root<Product> root, String property, Sort.Direction direction) {
+    private Order buildSingleOrderCriteria(
+            Root<Product> root,
+            String property,
+            Sort.Direction direction
+    ) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         ArrayList<String> validFields = productUtils.getProductFields();
         if (validFields.contains(property)) {
@@ -113,15 +164,4 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
         return null;
     }
 
-    private TypedQuery<Long> buildProductCountQuery() {
-        CriteriaQuery<Long> criteriaQuery = buildProductCountCriteriaQuery();
-        return entityManager.createQuery(criteriaQuery);
-    }
-
-    private CriteriaQuery<Long> buildProductCountCriteriaQuery() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<Product> root = criteriaQuery.from(Product.class);
-        return criteriaQuery.select(criteriaBuilder.count(root));
-    }
 }
