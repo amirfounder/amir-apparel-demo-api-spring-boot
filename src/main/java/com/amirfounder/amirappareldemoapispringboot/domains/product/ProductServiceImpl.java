@@ -26,11 +26,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProducts(Product product, Pageable page) {
+    public Page<Product> getProducts(Product product, Pageable pageable) {
         Example<Product> example = Example.of(product, ExampleMatcher.matchingAll().withIgnoreCase());
 
         try {
-            return productRepository.findAll(example, page);
+            return productRepository.findAll(example, pageable);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
             throw new ServiceUnavailable(dae.getMessage());
