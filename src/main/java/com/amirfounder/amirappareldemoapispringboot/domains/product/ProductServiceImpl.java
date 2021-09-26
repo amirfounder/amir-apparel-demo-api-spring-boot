@@ -11,6 +11,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,5 +65,15 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return product;
+    }
+
+    @Override
+    public ArrayList<String> getDistinctAttributes(String attribute) {
+        try {
+            return productRepository.findDistinctAttributes(attribute);
+        } catch (DataAccessException dae) {
+            logger.error(dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
+        }
     }
 }

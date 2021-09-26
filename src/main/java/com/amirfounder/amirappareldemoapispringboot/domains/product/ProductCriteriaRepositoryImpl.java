@@ -1,5 +1,8 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.product;
 
+import com.amirfounder.amirappareldemoapispringboot.exceptions.BadRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +17,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository {
+
+    private Logger logger = LogManager.getLogger(ProductCriteriaRepositoryImpl.class);
 
     private final EntityManager entityManager;
     private final ProductUtils productUtils;
@@ -39,6 +44,25 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
         Long count = countTypedQuery.getSingleResult();
 
         return new PageImpl<>(products, pageable, count);
+    }
+
+    @Override
+    public ArrayList<String> findDistinctAttributes(
+            String attribute
+    ) {
+        if (!productUtils.getProductFields().contains(attribute)) {
+            logger.error("Could not find attributes by the name of '" + attribute + "'");
+            throw new BadRequest("Could not find attributes by the name of '" + attribute + "'");
+        }
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        criteriaQuery.select(root.get(attribute)).distinct(true);
+        TypedQuery<String> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        return (ArrayList<String>) typedQuery.getResultList();
     }
 
     private TypedQuery<Product> buildProductsQuery(

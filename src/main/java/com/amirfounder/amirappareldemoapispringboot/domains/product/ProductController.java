@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.amirfounder.amirappareldemoapispringboot.utils.Paths.PRODUCTS_PATH;
@@ -50,6 +51,14 @@ public class ProductController {
     ) {
         logger.info("Request received for getProductById with Id: " + id);
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/attribute/{attribute}")
+    public ResponseEntity<ArrayList<String>> getDistinctAttributes(
+            @PathVariable String attribute
+    ) {
+        logger.info("Request received for getDistrictAttributes for attribute " + attribute);
+        return new ResponseEntity<>(productService.getDistinctAttributes(attribute), HttpStatus.OK);
     }
 
 }
