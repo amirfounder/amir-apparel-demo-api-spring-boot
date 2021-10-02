@@ -11,25 +11,43 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     Logger logger = LogManager.getLogger(ProductServiceImpl.class);
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    ProductRepository productRepository;
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
-    public Page<Product> getProducts(Product product, Pageable page) {
+    public Page<Product> getProducts(Product product, Pageable pageable) {
         Example<Product> example = Example.of(product, ExampleMatcher.matchingAll().withIgnoreCase());
 
         try {
-            return productRepository.findAll(example, page);
+            return productRepository.findAll(example, pageable);
         } catch (DataAccessException dae) {
             logger.error(dae.getMessage());
             throw new ServiceUnavailable(dae.getMessage());
         }
     }
+
+    @Override
+    public Page<Product> getProductsWithFilter(Product product, Pageable pageable) {
+        try {
+            return productRepository.findAllWithFilter(product, pageable);
+        } catch (DataAccessException dae) {
+            logger.error(dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
+        }
+    }
+
 
     @Override
     public Product getProductById(Long id) {
@@ -47,5 +65,15 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return product;
+    }
+
+    @Override
+    public ArrayList<String> getDistinctAttributes(String attribute) {
+        try {
+            return productRepository.findDistinctAttributes(attribute);
+        } catch (DataAccessException dae) {
+            logger.error(dae.getMessage());
+            throw new ServiceUnavailable(dae.getMessage());
+        }
     }
 }
