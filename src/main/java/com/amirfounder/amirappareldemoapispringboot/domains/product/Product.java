@@ -23,6 +23,7 @@ public class Product {
     private LocalDate launchDate;
     private String demographic;
     private String color;
+    private String hexCode;
 
     public Product() {}
 
@@ -112,6 +113,14 @@ public class Product {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getHexCode() {
+        return hexCode;
+    }
+
+    public void setHexCode(String hexCode) {
+        this.hexCode = hexCode;
     }
 
     @Override

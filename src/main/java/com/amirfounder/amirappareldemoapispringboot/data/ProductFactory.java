@@ -25,6 +25,7 @@ public class ProductFactory {
         String material = generateMaterial();
         String type = generateType();
         String name = generateName(material, type);
+        String hexCode = generateHexCode();
 
         product.setId((long) id + 1);
         product.setName(name);
@@ -36,9 +37,25 @@ public class ProductFactory {
         product.setActiveStatus(generateActiveStatus());
         product.setDemographic(generateDemographic());
         product.setLaunchDate(generateLaunchDate());
-        product.setColor(generateColor());
+        product.setHexCode(hexCode);
+        product.setColor(generateColor(hexCode));
 
         return product;
+    }
+
+    private String generateColor(String hexCode) {
+        switch (hexCode) {
+            case "b0160b":
+                return "Dark Red";
+            case "870bb0":
+                return "Purple";
+            case "16f7d2":
+                return "Turquoise";
+            case "0b81b0":
+                return "Blue";
+            default:
+                return "Unknown";
+        }
     }
 
     private String generateType() {
@@ -91,10 +108,10 @@ public class ProductFactory {
         return LocalDate.ofEpochDay(randomDay);
     }
 
-    private String generateColor() {
-        String[] colors = {"#b0160b", "#b0160b", "#870bb0", "#0b81b0"};
-        int randomIndex = generateRandomInt(colors.length);
-        return colors[randomIndex];
+    private String generateHexCode() {
+        String[] hexCodes = {"b0160b", "16f7d2", "870bb0", "0b81b0"};
+        int randomIndex = generateRandomInt(hexCodes.length);
+        return hexCodes[randomIndex];
     }
 
     private int generateRandomInt(int maxBound) {
