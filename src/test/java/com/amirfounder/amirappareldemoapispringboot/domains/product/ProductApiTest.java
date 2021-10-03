@@ -57,6 +57,13 @@ public class ProductApiTest {
     }
 
     @Test
+    public void getProductById_GivenInvalidId_Returns404() throws Exception {
+        mockMvc.perform(get(PRODUCTS_PATH + "/99999999999999"))
+                .andExpect(status().is(404))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     public void getProductsWithFilter_GivenDemographicEqualsMen_Returns200WithMenProducts() throws Exception {
         mockMvc.perform(get(PRODUCTS_PATH + "/filter?demographic=men"))
                 .andExpect(status().isOk())
@@ -82,6 +89,14 @@ public class ProductApiTest {
     }
 
     @Test
+    public void getProductsWithFilter_GivenInvalidAttribute_Returns200() throws Exception {
+        mockMvc.perform(get(PRODUCTS_PATH + "/filter?foo=bar"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content[*]", everyItem(is(anything()))));
+    }
+
+    @Test
     public void getProductsWithSort_GivenSortEqualsPriceAscending_Returns200WithSortedPrice() throws Exception {
         String json = mockMvc.perform(get(PRODUCTS_PATH + "/filter?sort=price,asc"))
                 .andExpect(status().isOk())
@@ -104,7 +119,7 @@ public class ProductApiTest {
 
     @Test
     public void getProductsWithSort_GivenSortEqualsPriceDescending_Returns200WithSortedPrice() throws Exception {
-        String json = mockMvc.perform(get(PRODUCTS_PATH + "/filter?sort=price,desc"))
+        String json = mockMvc.perform(get(PRODUCTS_PATH + "/filter?sort=name,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
@@ -117,8 +132,8 @@ public class ProductApiTest {
         ArrayList<Product> expected = new ArrayList<>(Arrays.asList(products));
         ArrayList<Product> actual = new ArrayList<>(Arrays.asList(products));
 
-        Comparator<Product> compareByPriceDesc = (o1, o2) -> o2.getPrice().compareTo(o1.getPrice());
-        expected.sort(compareByPriceDesc);
+        Comparator<Product> compareByNameDesc = (o1, o2) -> o2.getName().compareTo(o1.getName());
+        expected.sort(compareByNameDesc);
 
         Assert.assertEquals(expected, actual);
     }
@@ -129,6 +144,13 @@ public class ProductApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[*]", everyItem(is(any(String.class)))));
+    }
+
+    @Test
+    public void getDistinctAttributes_GivenInvalidAttribute_Returns400() throws Exception {
+        mockMvc.perform(get(PRODUCTS_PATH + "/attribute/foo"))
+                .andExpect(status().is(400))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
 }
