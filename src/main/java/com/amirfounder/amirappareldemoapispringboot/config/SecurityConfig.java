@@ -15,10 +15,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .csrf()
-            .disable()
-            .authorizeRequests()
-            .antMatchers("*").permitAll();
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("*").permitAll();
     }
 
     @Bean

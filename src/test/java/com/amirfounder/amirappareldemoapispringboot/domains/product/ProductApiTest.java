@@ -14,7 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 
 import static com.amirfounder.amirappareldemoapispringboot.utils.Paths.PRODUCTS_PATH;
 import static org.hamcrest.Matchers.*;
@@ -41,7 +44,7 @@ public class ProductApiTest {
     }
 
     @Test
-    public void getProducts_GiveNoBody_Returns200() throws Exception {
+    public void getProducts_Returns200() throws Exception {
         mockMvc.perform(get(PRODUCTS_PATH))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -49,7 +52,7 @@ public class ProductApiTest {
     }
 
     @Test
-    public void getProductById_GivenNoBody_Returns200() throws Exception {
+    public void getProductById_Returns200() throws Exception {
         mockMvc.perform(get(PRODUCTS_PATH + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -86,6 +89,15 @@ public class ProductApiTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.content[*].demographic", everyItem(is("Men"))))
                 .andExpect(jsonPath("$.content[*].material", everyItem(is("Silk"))));
+    }
+
+    @Test
+    public void getProductsWithFilter_GivenValidAttribute_InvalidField_Returns200EmptyArray() throws Exception {
+        mockMvc.perform(get(PRODUCTS_PATH + "/filter?demographic=foo"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.content", hasSize(0)))
+                .andExpect(jsonPath("$.content", not(hasSize(greaterThan(0)))));
     }
 
     @Test

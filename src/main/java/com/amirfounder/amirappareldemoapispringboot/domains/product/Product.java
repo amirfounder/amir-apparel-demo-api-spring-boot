@@ -25,7 +25,8 @@ public class Product {
     private String color;
     private String hexCode;
 
-    public Product() {}
+    public Product() {
+    }
 
     public Long getId() {
         return id;
