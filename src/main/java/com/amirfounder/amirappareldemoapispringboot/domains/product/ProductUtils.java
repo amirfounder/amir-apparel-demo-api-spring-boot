@@ -13,9 +13,9 @@ public class ProductUtils {
     public ArrayList<String> getProductFields() {
         Field[] fields = Product.class.getDeclaredFields();
         return (ArrayList<String>) Arrays
-                        .stream(fields)
-                        .map((Field::getName))
-                        .collect(Collectors.toList());
+                .stream(fields)
+                .map((Field::getName))
+                .collect(Collectors.toList());
     }
 
 }

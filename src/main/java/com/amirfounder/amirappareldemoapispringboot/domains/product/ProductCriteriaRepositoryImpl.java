@@ -12,13 +12,16 @@ import org.springframework.data.domain.Sort;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository {
 
-    private Logger logger = LogManager.getLogger(ProductCriteriaRepositoryImpl.class);
+    private final Logger logger = LogManager.getLogger(ProductCriteriaRepositoryImpl.class);
 
     private final EntityManager entityManager;
     private final ProductUtils productUtils;
