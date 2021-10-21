@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 
-import static com.amirfounder.amirappareldemoapispringboot.utils.Paths.PRODUCTS_PATH;
+import static com.amirfounder.amirappareldemoapispringboot.utils.Constants.PRODUCTS_PATH;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

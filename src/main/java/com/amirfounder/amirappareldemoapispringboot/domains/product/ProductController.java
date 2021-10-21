@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
-import static com.amirfounder.amirappareldemoapispringboot.utils.Paths.PRODUCTS_PATH;
+import static com.amirfounder.amirappareldemoapispringboot.utils.Constants.PRODUCTS_PATH;
 
 @RestController
 @RequestMapping(path = PRODUCTS_PATH)
