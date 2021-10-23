@@ -9,6 +9,10 @@ spring:
     database: POSTGRESQL
     hibernate:
       ddl-auto: create
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        physical-strategy: com.amirfounder.amirappareldemoapispringboot.config.hibernatenamingstrategies.SnakeCasePhysicalNamingStrategy
 
 server:
   port: 8085
+

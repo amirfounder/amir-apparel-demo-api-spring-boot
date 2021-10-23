@@ -1,7 +1,7 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.purchase;
 
 import com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables.CreditCard;
-import com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables.DeliveryAddress;
+import com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables.Address;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.BadRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class PurchaseValidator {
     }
 
     public HashMap<String, String> getInvalidDeliveryAddressFields(
-            DeliveryAddress deliveryAddress
+            Address deliveryAddress
     ) {
         return new HashMap<>();
     }

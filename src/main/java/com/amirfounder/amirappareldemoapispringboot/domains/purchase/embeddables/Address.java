@@ -3,7 +3,7 @@ package com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddable
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class DeliveryAddress {
+public class Address {
 
     private String street;
     private String streetOptional;
@@ -11,7 +11,7 @@ public class DeliveryAddress {
     private String state;
     private String zipCode;
 
-    public DeliveryAddress() {}
+    public Address() {}
 
     public String getStreet() {
         return street;

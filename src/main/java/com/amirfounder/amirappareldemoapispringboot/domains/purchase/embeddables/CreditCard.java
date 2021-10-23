@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 public class CreditCard {
 
     private String cardholderName;
-    private String creditCardNumber;
+    private String number;
     private String expirationDate;
     private String cvv;
 
@@ -21,11 +21,11 @@ public class CreditCard {
     }
 
     public String getCreditCardNumber() {
-        return creditCardNumber;
+        return number;
     }
 
     public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
+        this.number = creditCardNumber;
     }
 
     public String getExpirationDate() {
