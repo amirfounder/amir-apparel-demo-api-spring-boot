@@ -19,6 +19,10 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String firstName;
+
+    private String lastName;
+
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL)

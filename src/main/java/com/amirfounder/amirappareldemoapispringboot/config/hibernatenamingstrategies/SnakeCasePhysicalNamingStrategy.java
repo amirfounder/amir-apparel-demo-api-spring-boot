@@ -26,11 +26,6 @@ public class SnakeCasePhysicalNamingStrategy extends PhysicalNamingStrategyStand
         return super.toPhysicalSequenceName(toSnakeCase(name), context);
     }
 
-    @Override
-    public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
-        return super.toPhysicalTableName(toSnakeCase(name), context);
-    }
-
     private Identifier toSnakeCase(Identifier id) {
         if (id == null)
             return null;

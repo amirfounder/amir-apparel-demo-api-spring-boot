@@ -26,5 +26,6 @@ public class LineItem {
 
     private Integer quantity;
 
-    public LineItem() {}
+    public LineItem() {
+    }
 }

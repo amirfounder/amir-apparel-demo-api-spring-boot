@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class LineItemServiceImpl implements LineItemService {
@@ -30,7 +28,7 @@ public class LineItemServiceImpl implements LineItemService {
         Set<LineItem> lineItems = purchase.getLineItems();
 
         lineItems.forEach(lineItem -> {
-           lineItem.setPurchase(purchase);
+            lineItem.setPurchase(purchase);
 
             try {
                 lineItemRepository.save(lineItem);

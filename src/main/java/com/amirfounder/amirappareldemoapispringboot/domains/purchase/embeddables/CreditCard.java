@@ -15,7 +15,8 @@ public class CreditCard {
     private String expirationDate;
     private String cvv;
 
-    public CreditCard() {}
+    public CreditCard() {
+    }
 
     public String getCardholderName() {
         return cardholderName;
