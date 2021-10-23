@@ -3,12 +3,16 @@ package com.amirfounder.amirappareldemoapispringboot.domains.purchase;
 import com.amirfounder.amirappareldemoapispringboot.domains.lineitem.LineItem;
 import com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables.Address;
 import com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables.CreditCard;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 public class Purchase {
 
     @Id
@@ -30,54 +34,6 @@ public class Purchase {
     private CreditCard creditCard;
 
     public Purchase() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<LineItem> getLineItems() {
-        return lineItems;
-    }
-
-    public void setLineItems(Set<LineItem> lineItems) {
-        this.lineItems = lineItems;
-    }
-
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
-
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
     }
 
     @Override

@@ -1,8 +1,13 @@
 package com.amirfounder.amirappareldemoapispringboot.domains.purchase.embeddables;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Getter
+@Setter
 public class CreditCard {
 
     private String cardholderName;
@@ -18,29 +23,5 @@ public class CreditCard {
 
     public void setCardholderName(String cardholderName) {
         this.cardholderName = cardholderName;
-    }
-
-    public String getCreditCardNumber() {
-        return number;
-    }
-
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.number = creditCardNumber;
-    }
-
-    public String getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public String getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
     }
 }

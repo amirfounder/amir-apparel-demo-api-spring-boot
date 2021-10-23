@@ -19,7 +19,7 @@ public class ProductFactory {
         return generatedProducts;
     }
 
-    private Product generateProduct(int id) {
+    public Product generateProduct(int id) {
         Product product = new Product();
 
         String material = generateMaterial();

@@ -26,7 +26,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
-@WebMvcTest(ProductServiceImpl.class)
 public class ProductServiceImplTest {
 
 
