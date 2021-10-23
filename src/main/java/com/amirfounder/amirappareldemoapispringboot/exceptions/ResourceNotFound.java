@@ -1,9 +1,12 @@
 package com.amirfounder.amirappareldemoapispringboot.exceptions;
 
-public class ResourceNotFound extends RuntimeException{
+public class ResourceNotFound extends RuntimeException {
 
-    public ResourceNotFound() {}
+    public ResourceNotFound() {
+    }
 
-    public ResourceNotFound(String message) {super(message);}
+    public ResourceNotFound(String message) {
+        super(message);
+    }
 
 }
