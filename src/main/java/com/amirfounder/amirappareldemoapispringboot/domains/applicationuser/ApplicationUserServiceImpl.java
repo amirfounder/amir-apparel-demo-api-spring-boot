@@ -1,4 +1,4 @@
-package com.amirfounder.amirappareldemoapispringboot.domains.user;
+package com.amirfounder.amirappareldemoapispringboot.domains.applicationuser;
 
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ResourceNotFound;
 import com.amirfounder.amirappareldemoapispringboot.exceptions.ServiceUnavailable;
@@ -9,15 +9,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class ApplicationUserServiceImpl implements ApplicationUserService {
 
-    Logger logger = LogManager.getLogger(UserServiceImpl.class);
+    Logger logger = LogManager.getLogger(ApplicationUserServiceImpl.class);
 
     @Autowired
-    private UserRepository userRepository;
+    private ApplicationUserRepository userRepository;
 
     @Override
-    public User saveUser(User user, String bearerToken) {
+    public ApplicationUser saveUser(ApplicationUser user, String bearerToken) {
 
         try {
             return userRepository.save(user);
@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
-        User user;
+    public ApplicationUser getByEmail(String email) {
+        ApplicationUser user;
 
         try {
             user = userRepository.findByEmail(email);
