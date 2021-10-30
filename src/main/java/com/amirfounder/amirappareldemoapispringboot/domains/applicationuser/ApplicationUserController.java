@@ -30,8 +30,8 @@ public class ApplicationUserController {
 
     @PostMapping
     public ResponseEntity<ApplicationUserDTO> saveUser(
-            @RequestBody ApplicationUser requestUser,
-            @RequestHeader String bearerToken
+            @RequestHeader("Authorization") String bearerToken,
+            @RequestBody ApplicationUser requestUser
     ) {
         logger.info("request received for saveUser");
         ApplicationUser user = userService.saveUser(requestUser, bearerToken);
@@ -41,11 +41,11 @@ public class ApplicationUserController {
 
     @GetMapping(path = "/{email}")
     public ResponseEntity<ApplicationUserDTO> getByEmail(
-            @RequestHeader String bearerToken,
+            @RequestHeader("Authorization") String bearerToken,
             @PathVariable String email
     ) {
         logger.info("Request received for getUserByEmail");
-        ApplicationUser user = userService.getByEmail(email);
+        ApplicationUser user = userService.getByEmail(email, bearerToken);
         ApplicationUserDTO userDTO = modelMapper.map(user, ApplicationUserDTO.class);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
