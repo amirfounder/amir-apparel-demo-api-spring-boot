@@ -14,6 +14,7 @@ public class ExceptionController {
     private static final String SERVER_ERROR = "500 Server Error";
     private static final String SERVICE_UNAVAILABLE = "503 Service Unavailable";
     private static final String BAD_REQUEST = "400 Bad Request";
+    private static final String UNAUTHORIZED = "401 Unauthorized";
 
     @ExceptionHandler(ResourceNotFound.class)
     protected ResponseEntity<ExceptionResponse> resourceNotFound(ResourceNotFound exception) {
@@ -53,5 +54,15 @@ public class ExceptionController {
                 exception.getMessage()
         );
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Unauthorized.class)
+    protected ResponseEntity<ExceptionResponse> unauthorized(Unauthorized exception) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                UNAUTHORIZED,
+                exception.getMessage()
+        );
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 }
