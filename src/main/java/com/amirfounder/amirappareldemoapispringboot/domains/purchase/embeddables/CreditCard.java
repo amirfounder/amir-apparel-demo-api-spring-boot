@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
 public class CreditCard {
 
     private String cardholderName;
-    private String number;
+    private String cardNumber;
     private String expirationDate;
     private String cvv;
 
