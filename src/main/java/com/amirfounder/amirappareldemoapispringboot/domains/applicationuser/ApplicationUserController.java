@@ -39,10 +39,10 @@ public class ApplicationUserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/{email}")
+    @GetMapping
     public ResponseEntity<ApplicationUserDTO> getByEmail(
             @RequestHeader("Authorization") String bearerToken,
-            @PathVariable String email
+            @RequestParam String email
     ) {
         logger.info("Request received for getUserByEmail");
         ApplicationUser user = userService.getByEmail(email, bearerToken);
