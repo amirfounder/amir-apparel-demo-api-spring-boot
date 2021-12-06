@@ -47,7 +47,7 @@ public class PurchaseServiceImplTests {
 
     @Test
     public void purchaseToPurchaseDTO_CreditCardNotAvailable() {
-        purchase.getCreditCard().setNumber("1234123412341234");
+        purchase.getCreditCard().setCardNumber("1234123412341234");
         purchase.getBillingAddress().setCity("City");
         purchase.setId(1L);
 
