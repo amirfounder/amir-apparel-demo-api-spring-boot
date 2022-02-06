@@ -1,4 +1,4 @@
-# Amir Apparel Demo API Dotnet (.NET)
+# Amir Apparel Demo API Spring Boot
 
 This project is the API of the client-server architecture Amir Apparel Demo. You can find the rest of the repositories on this page: https://github.com/amirfounder.
 
